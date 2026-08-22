@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="description" content="Abu Arefin Aroop — AI-Assisted Cyber Security Engineer. VAPT, Ethical Hacking, AI Security, Digital Forensics.">
+<meta property="og:title" content="Abu Arefin Aroop · Cybersecurity Engineer">
+<meta property="og:description" content="AI-Assisted Cyber Security Engineer — VAPT, Ethical Hacking, AI Security, Digital Forensics, Teaching.">
+<meta property="og:image" content="assets/images/og-preview.jpg">
+<meta property="og:url" content="https://abuarefinaroop.netlify.app">
+<meta name="twitter:card" content="summary_large_image">
+<title>Abu Arefin Aroop · Cybersecurity Engineer</title>
+<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;300;400;500;700&family=Cabinet+Grotesk:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root{
+  --bg:#0d0b18;--bg2:#111120;
+  --ink:rgba(255,255,255,.96);--ink2:rgba(255,255,255,.68);--ink3:rgba(255,255,255,.40);
+  --bdr:rgba(255,255,255,.12);--card:rgba(13,11,26,.92);
+  --mono:'JetBrains Mono',monospace;--dis:'Cabinet Grotesk',-apple-system,sans-serif;
+  --pw:min(460px,100vw);
+}
+.LT{
+  --bg:#ede8d8;--bg2:#e3dece;
+  --ink:rgba(8,8,8,.96);--ink2:rgba(8,8,8,.64);--ink3:rgba(8,8,8,.36);
+  --bdr:rgba(0,0,0,.11);--card:rgba(240,234,218,.94);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--mono)}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--mono);cursor:pointer}
+#cv{position:fixed;inset:0;z-index:1;touch-action:none;cursor:crosshair}
+#cr,#rg{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+#cr{width:9px;height:9px;background:#64ffda;transition:transform .1s,background .18s}
+#rg{width:34px;height:34px;border:1.5px solid #64ffda;opacity:.48;transition:border-color .18s,opacity .18s,left .11s ease,top .11s ease}
+@media(pointer:coarse){#cr,#rg{display:none}}
+
+/* ── TOP BAR ── */
+#bar{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:8px;padding:13px 20px;flex-wrap:wrap;pointer-events:none}
+#bar>*{pointer-events:auto}
+#wm{font-size:12px;letter-spacing:.32em;color:var(--ink);font-weight:500;white-space:nowrap;flex-shrink:0}
+#tabs{display:flex;align-items:center;gap:5px;flex:1;justify-content:center;flex-wrap:wrap}
+#tl{font-size:9px;letter-spacing:.22em;color:var(--ink3);white-space:nowrap;margin-right:2px}
+.tb{font-size:10px;letter-spacing:.13em;color:var(--ink2);border:1.5px solid var(--bdr);border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;background:rgba(10,8,22,.32);backdrop-filter:blur(10px);transition:.18s;white-space:nowrap}
+.LT .tb{background:rgba(255,255,255,.42)}
+.tb i{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+.tb.on{color:#06070d!important;border-color:transparent!important;font-weight:700}
+#br{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.bbtn{font-size:10px;letter-spacing:.1em;color:var(--ink2);border:1.5px solid var(--bdr);border-radius:999px;padding:6px 13px;background:rgba(10,8,22,.32);backdrop-filter:blur(10px);transition:.18s}
+.LT .bbtn{background:rgba(255,255,255,.44)}
+.bbtn:hover{color:var(--ink)}
+@media(max-width:680px){
+  #bar{padding:9px 12px 6px;gap:6px}
+  #tabs{order:10;width:100%;justify-content:flex-start}
+  #tl{display:none}
+  .tb{font-size:9px;padding:4px 9px}
+}
+
+/* ── MINIMAP ── */
+#mwrap{position:fixed;top:54px;left:15px;z-index:15}
+#mlbl{font-size:9px;letter-spacing:.18em;color:var(--ink3);margin-bottom:5px}
+#mm{display:block;border:1px solid var(--bdr);border-radius:10px;backdrop-filter:blur(14px);background:rgba(8,8,20,.22);cursor:pointer}
+.LT #mm{background:rgba(235,228,212,.4)}
+@media(max-width:680px){#mwrap{display:none}}
+
+/* ── TOOLTIP ── */
+#tip{position:fixed;z-index:30;pointer-events:none;opacity:0;transition:opacity .12s;background:rgba(8,8,20,.88);border:1px solid var(--bdr);border-radius:8px;padding:8px 12px;backdrop-filter:blur(12px);transform:translate(-50%,-130%);min-width:160px;max-width:240px}
+.LT #tip{background:rgba(244,238,222,.94)}
+.tn{font-size:12px;color:var(--ink);display:flex;align-items:center;gap:7px}
+.td{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+.tk{font-size:9.5px;letter-spacing:.1em;color:var(--ink3);text-transform:uppercase;margin-top:3px}
+.tg{font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-top:5px;font-weight:600}
+
+/* ── AREA PILLS ── */
+.ap{position:fixed;transform:translate(-50%,-50%);z-index:10;display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:30px;border:1.5px solid;cursor:pointer;backdrop-filter:blur(12px);white-space:nowrap;transition:transform .2s,opacity .25s;font-size:10.5px;font-weight:700;letter-spacing:.04em}
+.ap:hover{transform:translate(-50%,-50%) scale(1.08)}
+.ap .ad{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ap .ae{opacity:.48;font-weight:400;margin-left:2px;font-size:9.5px}
+@media(max-width:680px){.ap{font-size:9px;padding:5px 10px}}
+
+/* ── HINT ── */
+#hint{position:fixed;bottom:13px;right:15px;z-index:8;font-size:9.5px;letter-spacing:.08em;color:var(--ink3);text-align:right;pointer-events:none;line-height:1.7;transition:opacity .3s}
+
+/* ── PANEL ── */
+#pnl{position:fixed;top:0;right:0;bottom:0;width:var(--pw);z-index:25;background:var(--card);border-left:1px solid var(--bdr);backdrop-filter:blur(26px);overflow-y:auto;transform:translateX(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);pointer-events:none}
+#pnl.open{transform:none;pointer-events:auto}
+#pnl::-webkit-scrollbar{width:4px}
+#pnl::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+#ph{position:sticky;top:0;z-index:2;background:var(--card);border-bottom:1px solid var(--bdr);padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+#pbk{font-size:10px;letter-spacing:.12em;color:var(--ink2);background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:999px;padding:6px 13px;transition:.18s}
+.LT #pbk{background:rgba(0,0,0,.05)}
+#pbk:hover{border-color:var(--ink);color:var(--ink)}
+#pat{font-size:9px;letter-spacing:.16em;color:var(--ink3)}
+#pb{padding:24px 20px 52px}
+.pk{font-size:9px;letter-spacing:.2em;text-transform:uppercase;display:block;margin-bottom:10px}
+#pb h2{font-family:var(--dis);font-size:clamp(26px,5vw,44px);font-weight:800;letter-spacing:-.03em;line-height:.9;margin-bottom:12px;word-break:break-word;-webkit-text-fill-color:transparent;background-clip:text;-webkit-background-clip:text}
+.pl{font-size:13px;line-height:1.78;color:var(--ink2);margin-bottom:14px;font-weight:300}
+.pl strong{font-weight:600;color:var(--ink)}
+.pgr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.pc{background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:9px;padding:12px}
+.LT .pc{background:rgba(0,0,0,.04)}
+.cv{font-size:22px;font-weight:700;margin-bottom:3px;letter-spacing:-.02em;display:block}
+.cl{font-size:11px;color:var(--ink3)}
+.ps{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin:18px 0 7px;display:flex;align-items:center;gap:8px}
+.ps::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.pr{padding:9px 0;border-bottom:1px solid var(--bdr);font-size:13px;color:var(--ink2);display:flex;align-items:center;gap:8px;transition:color .15s}
+.pr::before{content:'→';font-size:11px;flex-shrink:0;color:var(--ink3)}
+a.pr:hover{color:var(--ink)}
+.ptgs{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0}
+.ptg{border:1px solid var(--bdr);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--ink3)}
+.pbx{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:9px;padding:13px;margin-bottom:8px}
+.LT .pbx{background:rgba(0,0,0,.03)}
+.pbx strong{display:block;font-size:13px;margin-bottom:4px;color:var(--ink)}
+.pbx p,.pbx span{font-size:12px;color:var(--ink2);line-height:1.65}
+.pct{display:block;width:100%;padding:12px;border-radius:8px;font-size:11px;letter-spacing:.05em;font-weight:700;text-align:center;cursor:pointer;transition:.18s;border:none;margin-top:11px;text-decoration:none}
+.pcs{color:#06070d}
+.pcs:hover{opacity:.86}
+.pcg{background:transparent!important;border:1px solid var(--bdr)!important;color:var(--ink2)!important}
+.pcg:hover{border-color:var(--ink)!important;color:var(--ink)!important}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:7px 0}
+.ci{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:7px;padding:9px}
+.LT .ci{background:rgba(0,0,0,.03)}
+.ci strong{display:block;font-size:12px;margin-bottom:3px;color:var(--ink)}
+.ci span{font-size:11px;color:var(--ink3)}
+.fl{font-size:9px;letter-spacing:.12em;color:var(--ink3);display:block;margin-bottom:5px;text-transform:uppercase}
+.fi{width:100%;padding:10px 12px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:7px;color:var(--ink);font-family:var(--mono);font-size:13px;outline:none;transition:border-color .18s;margin-bottom:11px}
+.LT .fi{background:rgba(0,0,0,.04)}
+.fi:focus{border-color:currentColor}
+.fia{resize:vertical;min-height:86px}
+.fi option{background:#0d0b18}
+
+/* ── CERT CATEGORY CARDS ── */
+.cert-cats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.ccat{display:flex;flex-direction:column;align-items:center;gap:7px;padding:15px 10px;border-radius:10px;border:1.5px solid;text-decoration:none;transition:.2s;cursor:pointer;text-align:center}
+.ccat:hover{transform:translateY(-2px)}
+.ccat .ccat-ico{font-size:24px}
+.ccat .ccat-lbl{font-size:11px;font-weight:700;letter-spacing:.08em}
+.ccat .ccat-sub{font-size:10px;color:var(--ink3)}
+.ccat .ccat-go{font-size:9px;margin-top:2px;font-weight:400}
+
+/* ── bKash card ── */
+.bkash-card{background:rgba(232,0,120,.06);border:1.5px solid rgba(232,0,120,.3);border-radius:12px;padding:18px;margin-bottom:12px;text-align:center}
+.bkash-card:hover{border-color:rgba(232,0,120,.6)}
+.bkash-title{font-size:11px;font-weight:700;color:#e80078;letter-spacing:.1em;margin-bottom:12px}
+.bkash-qr-img{width:170px;height:170px;border-radius:8px;border:2px solid rgba(232,0,120,.3);display:block;margin:0 auto 12px;object-fit:cover;background:rgba(232,0,120,.05)}
+.bkash-num{font-size:18px;font-weight:700;color:var(--ink);letter-spacing:.12em;margin-bottom:4px}
+.bkash-sub{font-size:10px;color:var(--ink3)}
+.bkash-btn{display:inline-block;margin-top:10px;padding:8px 18px;background:#e80078;color:#fff;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-decoration:none;transition:.2s;border:none;cursor:pointer}
+.bkash-btn:hover{opacity:.85}
+
+/* ── Bank card ── */
+.bank-card{background:rgba(100,255,218,.05);border:1.5px solid rgba(100,255,218,.22);border-radius:12px;padding:18px;margin-bottom:12px}
+.bank-title{font-size:11px;font-weight:700;color:#64ffda;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.bank-table{width:100%;border-collapse:collapse;font-size:12px}
+.bank-table td{padding:7px 0;vertical-align:top}
+.bank-table td:first-child{color:var(--ink3);white-space:nowrap;padding-right:14px;width:40%}
+.bank-table td:last-child{color:var(--ink);font-weight:500}
+.bank-table tr{border-bottom:1px solid var(--bdr)}
+.bank-table tr:last-child{border-bottom:none}
+.copy-btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.copy-btn{flex:1;padding:7px;background:rgba(100,255,218,.1);border:1px solid rgba(100,255,218,.3);border-radius:6px;color:#64ffda;font-size:10px;cursor:pointer;font-family:var(--mono);transition:.2s}
+.copy-btn:hover{background:rgba(100,255,218,.2)}
+#cp_toast{display:none;margin-top:8px;text-align:center;font-size:10px;color:#64ffda}
+
+/* ── SPLASH ── */
+#sp{position:fixed;inset:0;z-index:100;background:#0d0b18;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .88s;cursor:pointer;user-select:none}
+#sp h1{font-family:var(--dis);font-size:clamp(44px,9vw,94px);font-weight:900;letter-spacing:-.03em;line-height:.92;text-align:center;color:#fff}
+#sp h1 em{color:#64ffda;font-style:normal}
+#sp p{font-size:12px;letter-spacing:.2em;color:rgba(255,255,255,.38);margin-top:14px;text-align:center}
+#sp small{font-size:9.5px;letter-spacing:.14em;color:rgba(255,255,255,.22);margin-top:52px;animation:bk 2.2s infinite}
+@keyframes bk{0%,100%{opacity:.22}50%{opacity:.82}}
+#prv{position:fixed;bottom:12px;left:15px;z-index:8;font-size:9px;letter-spacing:.1em;color:var(--ink3);transition:color .18s}
+#prv:hover{color:var(--ink)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div id="cr"></div><div id="rg"></div>
+
+<!-- TOP BAR -->
+<div id="bar">
+  <div id="wm">ABU AREFIN AROOP</div>
+  <div id="tabs">
+    <span id="tl">MAP AREAS ›</span>
+    <div class="tb on" data-id="aroop"><i></i>AROOP</div>
+    <div class="tb" data-id="vapt"><i></i>VAPT</div>
+    <div class="tb" data-id="ai"><i></i>AI / ML</div>
+    <div class="tb" data-id="forensics"><i></i>FORENSICS</div>
+    <div class="tb" data-id="research"><i></i>RESEARCH</div>
+    <div class="tb" data-id="teaching"><i></i>TEACHING</div>
+  </div>
+  <div id="br">
+    <button class="bbtn" id="clr">✦ CLEAR</button>
+    <button class="bbtn" id="thm">☀ Light</button>
+  </div>
+</div>
+
+<!-- MINIMAP -->
+<div id="mwrap">
+  <div id="mlbl">SITE MAP · you are here</div>
+  <canvas id="mm" width="178" height="126"></canvas>
+</div>
+
+<!-- TOOLTIP -->
+<div id="tip">
+  <div class="tn"><span class="td" id="tdot"></span><span id="tnm"></span></div>
+  <div class="tk" id="tkc"></div>
+  <div class="tg" id="tgo"></div>
+</div>
+
+<!-- FLOATING PILLS -->
+<div id="pills"></div>
+
+<!-- HINT -->
+<div id="hint">click an <b>area</b> (with ring) to explore<br>click a <b>node</b> to preview</div>
+
+<!-- PANEL -->
+<div id="pnl">
+  <div id="ph">
+    <button id="pbk">↖ BACK TO MAP</button>
+    <span id="pat"></span>
+  </div>
+  <div id="pb"></div>
+</div>
+
+<a id="prv" href="#">Privacy Policy</a>
+
+<!-- SPLASH -->
+<div id="sp">
+  <h1>Abu Arefin<br><em>Aroop.</em></h1>
+  <p>AI-ASSISTED CYBER SECURITY ENGINEER</p>
+  <small>CLICK ANYWHERE TO ENTER THE MAP</small>
+</div>
+
+<script>
+// ─── 1. DATA ───────────────────────────────────────────────────
+const C={
+  aroop:'#64ffda',vapt:'#ff6b6b',ai:'#b794f6',
+  forensics:'#63b3ed',research:'#f6ad55',teaching:'#ffd166',
+  certs:'#68d391',projects:'#fc8181',contact:'#76e4f7'
+};
+
+const NODES=[
+  {id:'aroop',lbl:'AROOP',col:C.aroop,rx:.50,ry:.46,r:1.0,area:true,
+   kicker:'AI-ASSISTED CYBER SECURITY ENGINEER',title:'Abu Arefin Aroop',
+   body:'Cybersecurity professional with <strong>2+ years of hands-on experience</strong> in VAPT, ethical hacking, and AI/ML security. Currently pursuing <strong>M.S. in Cyber Security</strong> at Bangladesh University of Professionals. Available worldwide for remote projects.'},
+  {id:'vapt',lbl:'VAPT',col:C.vapt,rx:.22,ry:.34,r:.72,area:true,
+   kicker:'OFFENSIVE SECURITY',title:'VAPT & Penetration Testing',
+   body:'Comprehensive vulnerability assessment and penetration testing across web, API, network, cloud, desktop, and AI/ML systems. Delivering actionable reports with OWASP methodology and prioritised remediation roadmaps.'},
+  {id:'ai',lbl:'AI / ML',col:C.ai,rx:.76,ry:.28,r:.68,area:true,
+   kicker:'ARTIFICIAL INTELLIGENCE',title:'AI/ML Security & Development',
+   body:'Building intelligent security systems and adversarially testing AI models. Specialising in LLM security, agentic AI threat modelling, prompt injection testing, and ML-powered threat intelligence platforms.'},
+  {id:'forensics',lbl:'FORENSICS',col:C.forensics,rx:.80,ry:.64,r:.62,area:true,
+   kicker:'INCIDENT RESPONSE',title:'Digital Forensics',
+   body:'End-to-end digital forensics investigations covering Windows, Linux, email, and storage media. Legally admissible chain-of-custody documentation and forensic reporting with court-ready findings.'},
+  {id:'research',lbl:'RESEARCH',col:C.research,rx:.50,ry:.20,r:.55,area:true,
+   kicker:'ACADEMIC WORK',title:'Research & Publications',
+   body:'Bridging academic cybersecurity research with real-world AI/ML applications. Capstone supervised by Dr. Md. Azam Hossain at Bangladesh University of Professionals.'},
+  {id:'teaching',lbl:'TEACHING',col:C.teaching,rx:.24,ry:.68,r:.60,area:true,
+   kicker:'EDUCATION & MENTORSHIP',title:'Teaching & Training',
+   body:'Training 50+ professionals across cybersecurity, AI/ML, and secure development — blending theory with real-world attack/defence scenarios and maintaining high certification success rates.'},
+  {id:'certs',lbl:'CERTS',col:C.certs,rx:.18,ry:.52,r:.48,
+   kicker:'CREDENTIALS',title:'Certifications',
+   body:'All credentials are authentic and verifiable. Organised into 4 categories on Google Drive — click any category to view and verify.'},
+  {id:'projects',lbl:'PROJECTS',col:C.projects,rx:.76,ry:.76,r:.50,
+   kicker:'PORTFOLIO',title:'Projects & Demos',
+   body:'Live demonstrations of security tools, AI systems, and real-world implementations — each with source code, technical documentation, and measurable outcomes.'},
+  {id:'contact',lbl:'CONTACT',col:C.contact,rx:.50,ry:.76,r:.44,
+   kicker:'GET IN TOUCH',title:"Let's Work Together",
+   body:'Available for VAPT engagements, AI security consulting, digital forensics, secure development, and corporate training. Remote-first. Usually replies within 24 hours.'},
+];
+
+const EDGES=[
+  ['aroop','vapt'],['aroop','ai'],['aroop','forensics'],['aroop','research'],
+  ['aroop','teaching'],['aroop','certs'],['aroop','projects'],['aroop','contact'],
+  ['vapt','forensics'],['ai','research'],['ai','projects'],['vapt','projects'],
+  ['certs','vapt'],['teaching','certs'],['research','ai'],['forensics','certs'],
+  ['projects','contact'],['teaching','aroop'],
+];
+
+// ─── 2. PANEL CONTENT ──────────────────────────────────────────
+const PCONT={
+aroop:`
+<div class="pgr">
+  <div class="pc"><span class="cv" style="color:#64ffda">2+</span><div class="cl">Years Experience</div></div>
+  <div class="pc"><span class="cv" style="color:#64ffda">50+</span><div class="cl">Professionals Trained</div></div>
+  <div class="pc"><span class="cv" style="color:#64ffda">10+</span><div class="cl">Cases Closed</div></div>
+  <div class="pc"><span class="cv" style="color:#64ffda">6+</span><div class="cl">Certifications</div></div>
+</div>
+<div class="ps">Education</div>
+<div class="pr">M.S. Cyber Security · BUP · GPA 3.75/4.0</div>
+<div class="pr">B.Sc. Computer Science & Engineering · GUB · 2023</div>
+<div class="ps">Location</div>
+<div class="pr">Dhaka, Bangladesh · Remote Available Worldwide</div>
+<div class="ps">Connect</div>
+<a href="https://www.linkedin.com/in/abu-arefin-aroop" target="_blank" rel="noopener" class="pct pcs" style="background:#64ffda">VIEW LINKEDIN →</a>
+<a href="https://github.com/AbuArefinArooop" target="_blank" rel="noopener" class="pct pcg">GITHUB PROFILE</a>
+<a href="https://youtube.com/@abuarefinaroop?si=NHlYefBVmlSCzvMW" target="_blank" rel="noopener" class="pct pcg">▶ YOUTUBE CHANNEL</a>
+<a href="https://wa.me/8801706926259" target="_blank" rel="noopener" class="pct pcg">💬 WHATSAPP +880 1706-926259</a>
+<a href="mailto:aroop.cse@gmail.com" class="pct pcg">✉ aroop.cse@gmail.com</a>`,
+
+vapt:`
+<div class="ps">Services</div>
+<div class="pr">Web Application VAPT (OWASP Top 10)</div>
+<div class="pr">API Security Testing & Fuzzing</div>
+<div class="pr">Network Penetration Testing</div>
+<div class="pr">Cloud Security Assessment (AWS/GCP)</div>
+<div class="pr">AI / ML Model Red Teaming</div>
+<div class="pr">LLM Prompt Injection Testing</div>
+<div class="pr">Secure Code Review (SAST / DAST)</div>
+<div class="pr">Information Security Audit (ISO 27001)</div>
+<div class="ps">Tools</div>
+<div class="ptgs">
+  <span class="ptg">Burp Suite</span><span class="ptg">Metasploit</span>
+  <span class="ptg">Nmap</span><span class="ptg">Wireshark</span>
+  <span class="ptg">OWASP ZAP</span><span class="ptg">Acunetix</span>
+  <span class="ptg">Maltego</span><span class="ptg">Kali Linux</span>
+</div>
+<div class="ps">Engagements</div>
+<div class="pgr">
+  <div class="pc"><span class="cv" style="color:#ff6b6b">40+</span><div class="cl">Vulns Found</div></div>
+  <div class="pc"><span class="cv" style="color:#ff6b6b">85%</span><div class="cl">Risk Reduced</div></div>
+  <div class="pc"><span class="cv" style="color:#ff6b6b">4</span><div class="cl">Platforms Secured</div></div>
+  <div class="pc"><span class="cv" style="color:#ff6b6b">90%</span><div class="cl">Injection Blocked</div></div>
+</div>
+<div class="ps">Case Studies</div>
+<div class="pbx"><strong>E-Commerce Platform VAPT</strong><p>Hattan, Locally, Masafi, Neo Health — 40+ vulnerabilities identified, 85% risk reduction delivered.</p></div>
+<div class="pbx"><strong>LLM Red Teaming Assessment</strong><p>GPT-4 chatbot adversarial testing — 12 critical flaws found, 90% prompt injection success rate eliminated.</p></div>
+<a href="mailto:aroop.cse@gmail.com?subject=VAPT Inquiry" class="pct pcs" style="background:#ff6b6b">BOOK A VAPT →</a>`,
+
+ai:`
+<div class="ps">AI Security</div>
+<div class="pr">LLM Red Teaming & Prompt Injection Testing</div>
+<div class="pr">Adversarial AI & Model Security Assessment</div>
+<div class="pr">Agentic AI Threat Modelling</div>
+<div class="pr">RAG Pipeline Security Assessment</div>
+<div class="pr">AI Red Team Framework Development</div>
+<div class="ps">AI / ML Development</div>
+<div class="pr">Threat Intelligence Platform (OpenCTI + ML)</div>
+<div class="pr">NLP Security Tools (BERT, GPT)</div>
+<div class="pr">Fake News Detection — 92% accuracy</div>
+<div class="pr">Anomaly Detection & SIEM Integration</div>
+<div class="pr">Secure AI Chatbot with Injection Protection</div>
+<div class="ps">Frameworks & Libraries</div>
+<div class="ptgs">
+  <span class="ptg">TensorFlow</span><span class="ptg">PyTorch</span>
+  <span class="ptg">Keras</span><span class="ptg">Scikit-learn</span>
+  <span class="ptg">Hugging Face</span><span class="ptg">NumPy</span>
+  <span class="ptg">Pandas</span><span class="ptg">Matplotlib</span>
+  <span class="ptg">Seaborn</span><span class="ptg">OpenCTI</span>
+  <span class="ptg">BERT / GPT</span><span class="ptg">Docker</span>
+</div>
+<a href="mailto:aroop.cse@gmail.com?subject=AI Security Inquiry" class="pct pcs" style="background:#b794f6">HIRE FOR AI SECURITY →</a>`,
+
+forensics:`
+<div class="ps">Case Types Handled</div>
+<div class="pr">Windows System Intrusion (L3, L4, L5 Part 1+2)</div>
+<div class="pr">Linux Incident Response (L9)</div>
+<div class="pr">USB / Pendrive Forensics (Data Exfiltration)</div>
+<div class="pr">Email Header & Phishing Campaign Analysis</div>
+<div class="pr">Memory Dump & Process Analysis</div>
+<div class="pr">Network Traffic Forensics</div>
+<div class="pr">Log File & Timeline Reconstruction</div>
+<div class="pr">Chain-of-Custody Documentation</div>
+<div class="ps">Outcomes</div>
+<div class="pgr">
+  <div class="pc"><span class="cv" style="color:#63b3ed">10+</span><div class="cl">Cases Investigated</div></div>
+  <div class="pc"><span class="cv" style="color:#63b3ed">100%</span><div class="cl">Evidence Recovery</div></div>
+</div>
+<a href="mailto:aroop.cse@gmail.com?subject=Forensics Case" class="pct pcs" style="background:#63b3ed;color:#06070d">OPEN A CASE →</a>`,
+
+research:`
+<div class="ps">Capstone · 2025 (In Progress)</div>
+<div class="pbx" style="border-color:rgba(246,173,85,.3)">
+  <strong style="color:#f6ad55">Empowering Cyber Threat Intelligence with AI-Driven Analytics</strong>
+  <p>A Machine Learning Approach to OpenCTI Blending — integrating NLP & deep learning to blend structured/unstructured threat data for predictive analytics and real-time threat scoring.</p>
+  <div class="ptgs" style="margin-top:8px"><span class="ptg">ML</span><span class="ptg">NLP</span><span class="ptg">OpenCTI</span><span class="ptg">BERT</span><span class="ptg">TensorFlow</span></div>
+</div>
+<div class="ps">Undergraduate Thesis · 2023</div>
+<div class="pbx" style="border-color:rgba(246,173,85,.3)">
+  <strong style="color:#f6ad55">Brute Force Attack Prevention Novel Algorithm</strong>
+  <p>Adaptive rate-limiting algorithm achieving 50% reduction in vulnerability exposure. Python/Django implementation tested against OWASP benchmarks with statistical analysis.</p>
+  <div class="ptgs" style="margin-top:8px"><span class="ptg">Python</span><span class="ptg">Django</span><span class="ptg">OWASP ZAP</span><span class="ptg">Burp Suite</span></div>
+</div>
+<div class="ps">Research Interests</div>
+<div class="ptgs">
+  <span class="ptg">AI-Driven Drone/UAV Cyber Threat Intelligence</span>
+  <span class="ptg">AI-Driven Threat Intelligence</span>
+  <span class="ptg">Adversarial AI/ML</span>
+  <span class="ptg">LLM Security</span>
+  <span class="ptg">Network Intrusion Detection</span>
+  <span class="ptg">Explainable AI for Security</span>
+</div>`,
+
+teaching:`
+<div class="pgr">
+  <div class="pc"><span class="cv" style="color:#ffd166">50+</span><div class="cl">Professionals Trained</div></div>
+  <div class="pc"><span class="cv" style="color:#ffd166">5+</span><div class="cl">Workshops Held</div></div>
+  <div class="pc"><span class="cv" style="color:#ffd166">2+</span><div class="cl">Years Teaching</div></div>
+  <div class="pc"><span class="cv" style="color:#ffd166">9</span><div class="cl">Course Topics</div></div>
+</div>
+<div class="ps">Topics Offered</div>
+<div class="pr">AI Engineering</div>
+<div class="pr">Web Application Security & Penetration Testing</div>
+<div class="pr">Python-based Web Application Development</div>
+<div class="pr">Django, REST & FastAPI Security Analysis</div>
+<div class="pr">Network Penetration Testing</div>
+<div class="pr">Cloud Security on AWS</div>
+<div class="pr">System Design (API, DB, Caching, Big Data, Production)</div>
+<div class="pr">CEH Exam Preparation</div>
+<div class="pr">Python for Security Automation</div>
+<div class="pr">Digital Forensics Fundamentals</div>
+<div class="ps">What Students Say</div>
+<div class="pbx"><strong>Nafis Salman — Blue Team, Bangladesh</strong><p>"Abu's VAPT assessment uncovered critical vulnerabilities we didn't know existed. Highly recommended."</p></div>
+<div class="pbx"><strong>Sadia Afrin — Student, BUP</strong><p>"His hands-on workshops gave me real confidence in security analysis. Invaluable for my development."</p></div>
+<div class="pbx"><strong>Md. Mahadi Hasan — CompTIA Security+</strong><p>"Under Abu's mentorship I passed Security+. His structured methodology was instrumental."</p></div>
+<a href="mailto:aroop.cse@gmail.com?subject=Training Booking" class="pct pcs" style="background:#ffd166;color:#06070d">BOOK TRAINING →</a>`,
+
+certs:`
+<div class="ps">Browse My Certificates</div>
+<p style="font-size:12px;color:var(--ink2);line-height:1.75;margin-bottom:14px">All certificates are organised into 4 categories on Google Drive. Click any category to view and verify originals.</p>
+<div class="cert-cats">
+  <!-- REPLACE each href with your actual Google Drive folder link -->
+  <a class="ccat" href="https://drive.google.com/drive/folders/REPLACE_ECA_FOLDER_ID" target="_blank" rel="noopener"
+     style="color:#68d391;border-color:rgba(104,211,145,.35);background:rgba(104,211,145,.07)">
+    <span class="ccat-ico">🏆</span>
+    <span class="ccat-lbl" style="color:#68d391">ECA</span>
+    <span class="ccat-sub">Extra-Curricular Activities</span>
+    <span class="ccat-go" style="color:#68d391">VIEW →</span>
+  </a>
+  <a class="ccat" href="https://drive.google.com/drive/folders/REPLACE_ACADEMIC_FOLDER_ID" target="_blank" rel="noopener"
+     style="color:#63b3ed;border-color:rgba(99,179,237,.35);background:rgba(99,179,237,.07)">
+    <span class="ccat-ico">🎓</span>
+    <span class="ccat-lbl" style="color:#63b3ed">ACADEMIC</span>
+    <span class="ccat-sub">University & School</span>
+    <span class="ccat-go" style="color:#63b3ed">VIEW →</span>
+  </a>
+  <a class="ccat" href="https://drive.google.com/drive/folders/REPLACE_SKILLS_FOLDER_ID" target="_blank" rel="noopener"
+     style="color:#b794f6;border-color:rgba(183,148,246,.35);background:rgba(183,148,246,.07)">
+    <span class="ccat-ico">💡</span>
+    <span class="ccat-lbl" style="color:#b794f6">SKILLS</span>
+    <span class="ccat-sub">Professional & Technical</span>
+    <span class="ccat-go" style="color:#b794f6">VIEW →</span>
+  </a>
+  <a class="ccat" href="https://drive.google.com/drive/folders/REPLACE_OTHERS_FOLDER_ID" target="_blank" rel="noopener"
+     style="color:#f6ad55;border-color:rgba(246,173,85,.35);background:rgba(246,173,85,.07)">
+    <span class="ccat-ico">📂</span>
+    <span class="ccat-lbl" style="color:#f6ad55">OTHERS</span>
+    <span class="ccat-sub">Workshops & Participation</span>
+    <span class="ccat-go" style="color:#f6ad55">VIEW →</span>
+  </a>
+</div>
+<div class="ps">Highlights</div>
+<div class="cg">
+  <div class="ci"><strong>CEH</strong><span>Team Matrix · ID: AC05R · Feb 2024</span></div>
+  <div class="ci"><strong>Python Essentials 2</strong><span>Cisco Networking Academy · Verified</span></div>
+  <div class="ci"><strong>AI Agent — Agentforce</strong><span>GeeksforGeeks × Salesforce</span></div>
+  <div class="ci"><strong>Intro to SQL</strong><span>Abu Arefin Aroop</span></div>
+  <div class="ci"><strong>Pandas</strong><span>Data Science Certification</span></div>
+</div>
+<div class="ps">Internship & Specialisations</div>
+<div class="pbx" style="border-color:rgba(104,211,145,.3);background:rgba(104,211,145,.06)">
+  <strong style="color:#68d391">Pantech Solutions — AI/ML Internship</strong>
+  <div class="ptgs" style="margin-top:8px">
+    <span class="ptg">Python</span><span class="ptg">Data Analytics</span>
+    <span class="ptg">Machine Learning</span><span class="ptg">Deep Learning</span>
+    <span class="ptg">Artificial Intelligence</span>
+  </div>
+</div>
+<div class="ps">Academic Honours</div>
+<div class="pr">Top 5% of Class — M.S.c Cyber Security (2024–2026)</div>
+<div class="pr">Dean's List — B.S.c in CSE (2021, 2022)</div>
+<div class="pr"> SSC Score 5.0/5.0 — St Gregory's High School (2016)</div>`,
+
+projects:`
+<div class="ps">Featured</div>
+<div class="pbx" style="border-color:rgba(252,129,129,.28)">
+  <strong style="color:#fc8181">AI Threat Intelligence Platform</strong>
+  <p>ML models integrated with OpenCTI for real-time threat detection. 60% reduction in manual analysis time.</p>
+  <div class="ptgs" style="margin-top:6px"><span class="ptg">Python</span><span class="ptg">TensorFlow</span><span class="ptg">OpenCTI</span><span class="ptg">Docker</span></div>
+</div>
+<div class="pbx" style="border-color:rgba(252,129,129,.28)">
+  <strong style="color:#fc8181">Brute Force Prevention Algorithm</strong>
+  <p>Novel adaptive rate-limiting — 50% vulnerability exposure reduction, tested vs. OWASP benchmarks.</p>
+  <div class="ptgs" style="margin-top:6px"><span class="ptg">Python</span><span class="ptg">Flask</span><span class="ptg">OWASP</span><span class="ptg">ML</span></div>
+</div>
+<div class="pbx" style="border-color:rgba(252,129,129,.28)">
+  <strong style="color:#fc8181">Fake News Detection — 92% Accuracy</strong>
+  <p>BERT + LSTM NLP pipeline deployed as Flask web app with live scoring dashboard.</p>
+  <div class="ptgs" style="margin-top:6px"><span class="ptg">BERT</span><span class="ptg">LSTM</span><span class="ptg">NLP</span><span class="ptg">Flask</span></div>
+</div>
+<div class="pbx" style="border-color:rgba(252,129,129,.28)">
+  <strong style="color:#fc8181">Secure AI Chatbot + Injection Protection</strong>
+  <p>RAG-based chatbot with layered prompt injection defences and adversarial testing framework.</p>
+  <div class="ptgs" style="margin-top:6px"><span class="ptg">RAG</span><span class="ptg">LLM</span><span class="ptg">Python</span><span class="ptg">Security</span></div>
+</div>
+<a href="https://github.com/AbuArefinArooop" target="_blank" rel="noopener" class="pct pcs" style="background:#fc8181;color:#06070d">VIEW ON GITHUB →</a>
+<a href="https://youtube.com/playlist?list=PLDjY9QqbcKfE&si=-NEKqaN5MIuuM_pn" target="_blank" rel="noopener" class="pct pcg">▶ Research & Project Video Demos ↗</a>`,
+
+contact:`
+<div class="ps">Direct Channels</div>
+<a href="mailto:aroop.cse@gmail.com" class="pr">✉ aroop.cse@gmail.com</a>
+<a href="https://wa.me/8801540748424" target="_blank" rel="noopener" class="pr">💬 +880 1540748424 (WhatsApp Business)</a>
+<a href="https://www.linkedin.com/in/abu-arefin-aroop" target="_blank" rel="noopener" class="pr">in linkedin.com/in/abu-arefin-aroop</a>
+<a href="https://github.com/AbuArefinArooop" target="_blank" rel="noopener" class="pr">⌥ github.com/AbuArefinArooop</a>
+
+<div class="ps">Availability</div>
+<div class="pbx" style="border-color:rgba(100,255,218,.28);background:rgba(100,255,218,.06)">
+  <strong style="color:#64ffda">● Open for Project-Based Work</strong>
+  <span>AI Engineering · ML Systems · Generative AI · Adversarial AI · Security Audit · Drone/UAV Security · VAPT · Forensics · Training · Secure Development</span>
+</div>
+
+<!-- ── WHATSAPP MESSAGE FORM ── -->
+<div class="ps">Send a Message</div>
+<p style="font-size:11px;color:var(--ink3);margin-bottom:12px;line-height:1.65">
+  Fill the form — your message opens pre-filled in <strong style="color:#25D366">WhatsApp Business</strong>. Just tap Send.
+</p>
+<form id="cfrm" onsubmit="sbWA(event)">
+  <label class="fl">YOUR NAME</label>
+  <input class="fi" id="wa_name" type="text" required placeholder="Your full name">
+  <label class="fl">YOUR EMAIL (optional)</label>
+  <input class="fi" id="wa_email" type="email" placeholder="your@email.com">
+  <label class="fl">SERVICE NEEDED</label>
+  <select class="fi" id="wa_service">
+    <option>AI Engineering Projects</option>
+    <option>Designing & Developing Machine Learning Systems</option>
+    <option>Building Generative AI Services</option>
+    <option>Adversarial AI Attacks, Mitigations & Defense</option>
+    <option>Security Audit</option>
+    <option>Drone/UAV Security</option>
+    <option>VAPT / Penetration Testing</option>
+    <option>AI Security Consulting</option>
+    <option>Digital Forensics</option>
+    <option>Corporate Training</option>
+    <option>Secure Development</option>
+    <option>Research Collaboration</option>
+    <option>Other</option>
+  </select>
+  <label class="fl">YOUR MESSAGE</label>
+  <textarea class="fi fia" id="wa_msg" placeholder="Tell me about your project or inquiry..." required></textarea>
+  <button type="submit" class="pct pcs"
+    style="background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:11px">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    SEND VIA WHATSAPP
+  </button>
+  <div style="font-size:10px;color:var(--ink3);text-align:center;margin-top:8px;line-height:1.6">
+    Opens WhatsApp with your message pre-filled · Replies within 24 hours
+  </div>
+</form>
+
+<!-- ── PAYMENT OPTIONS ── -->
+<div class="ps">Payment Options</div>
+<p style="font-size:11px;color:var(--ink2);margin-bottom:14px;line-height:1.65">
+  For project payments, deposits, or consultation fees — use any option below.
+</p>
+
+<!-- bKash -->
+<div class="bkash-card">
+  <div class="bkash-title">📱 bKash — SEND MONEY</div>
+  <!-- REPLACE: save your bKash QR image as assets/images/bkash-qr.jpg -->
+  <img class="bkash-qr-img" src="D:\Personal Details\Protfolio Websit\A A Arrop Website\assets\imagesbkash-qr.jpg" alt="bKash QR — 01706926259"
+       onerror="this.style.display='none';document.getElementById('bkash_fb').style.display='flex'">
+  <!-- Fallback placeholder -->
+  <div id="bkash_fb" style="display:none;width:170px;height:170px;border-radius:8px;border:2px dashed rgba(232,0,120,.4);margin:0 auto 12px;align-items:center;justify-content:center;flex-direction:column;gap:6px;background:rgba(232,0,120,.05)">
+    <span style="font-size:28px">📷</span>
+    <span style="font-size:10px;color:rgba(232,0,120,.7);text-align:center">Save bKash QR as<br>assets/images/bkash-qr.jpg</span>
+  </div>
+  <div class="bkash-num">01706926259</div>
+  <div class="bkash-sub">Scan with bKash app → Send Money</div>
+  <a class="bkash-btn" href="https://shop.bkash.com/abu-arefin-aroop01706926259/pay" target="_blank" rel="noopener">
+    PAY ONLINE ↗
+  </a>
+</div>
+
+<!-- Bank Transfer -->
+<div class="bank-card">
+  <div class="bank-title">🏦 BANK TRANSFER — BRAC Bank PLC</div>
+  <table class="bank-table">
+    <tr><td>Account Name</td><td>ABU AREFIN AROOP</td></tr>
+    <tr><td>Account No.</td><td>1061820300001</td></tr>
+    <tr><td>Bank</td><td>BRAC Bank PLC</td></tr>
+    <tr><td>Branch</td><td>Wari Sub Branch</td></tr>
+    <tr><td>Routing No.</td><td>060274726</td></tr>
+    <tr><td>SWIFT Code</td><td>BRAKBDDH</td></tr>
+  </table>
+  <div class="copy-btns">
+    <button class="copy-btn" onclick="cpTxt('1061820300001','Account number')">📋 Copy Account No.</button>
+    <button class="copy-btn" onclick="cpTxt('BRAKBDDH','SWIFT code')">📋 Copy SWIFT Code</button>
+  </div>
+  <div id="cp_toast"></div>
+</div>
+<div style="font-size:10px;color:var(--ink3);text-align:center;line-height:1.8;margin-top:4px">
+  After payment, send a screenshot via
+  <a href="https://wa.me/8801706926259" target="_blank" style="color:#25D366">WhatsApp</a> for confirmation.
+</div>`
+};
+
+// ─── 3. ENGINE ─────────────────────────────────────────────────
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W=0,H=0,SC=0,isLt=false,rot=0;
+let camX=0,camY=0,dragS=null,dragged=false;
+let hovId=null,actId=null,pOpen=false;
+let mxC=-999,myC=-999,rxC=0,ryC=0;
+const t0=performance.now();
+
+function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight;SC=Math.min(W,H);}
+rsz();window.addEventListener('resize',rsz);
+
+function gauss(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(Math.PI*2*v);}
+function hRGB(h){return h.replace('#','').match(/.{2}/g).map(x=>parseInt(x,16));}
+
+function npos(n){
+  const pw=pOpen?Math.min(460,W):0;
+  return{x:n.rx*(W-pw)+camX,y:n.ry*H+camY,r:n.r*(SC*.165)};
+}
+
+NODES.forEach(n=>{
+  const cnt=Math.round(100+n.r*220);
+  n.pts=Array.from({length:cnt},()=>({
+    a:Math.random()*Math.PI*2,rr:Math.pow(Math.random(),.5),
+    b:Math.pow(Math.random(),1.7),ph:Math.random()*Math.PI*2,
+    sp:.18+Math.random()*.65,sz:.5+Math.pow(Math.random(),2)*1.55
+  }));
+});
+
+const STARS=Array.from({length:340},()=>({
+  x:Math.random()*3400-1700,y:Math.random()*2600-1300,
+  r:Math.random()*1.1+.2,a:Math.random()*.72+.14,tw:Math.random()*5+2
+}));
+
+function drawCloud(n,cx,cy,R,alpha,t){
+  if(alpha<.008)return;
+  const A=hRGB(n.col);
+  ctx.globalCompositeOperation=isLt?'source-over':'lighter';
+  n.pts.forEach(p=>{
+    const x=cx+Math.cos(p.a)*p.rr*R,y=cy+Math.sin(p.a)*p.rr*R*.92;
+    const tw=.56+.44*Math.sin(t*p.sp+p.ph);
+    let a=(0.03+p.b*.58)*tw*alpha,sz=p.sz*(.86+p.b*.5);
+    if(a<.003)return;
+    let r,g,b;
+    if(isLt){
+      const mix=.48+p.b*.38;
+      r=A[0]+(255-A[0])*mix*.42|0;g=A[1]+(255-A[1])*mix*.42|0;b=A[2]+(255-A[2])*mix*.42|0;
+      a=Math.min(.7,a*2.0);
+    }else{
+      const heat=Math.min(1,.04+p.b*1.12);
+      const cold=[22,7,52],hot=[255,(145+A[1]*.25)|0,22];
+      if(heat<.5){const f=heat/.5;r=cold[0]+(A[0]-cold[0])*f|0;g=cold[1]+(A[1]-cold[1])*f|0;b=cold[2]+(A[2]-cold[2])*f|0;}
+      else{const f=(heat-.5)/.5;r=A[0]+(hot[0]-A[0])*f|0;g=A[1]+(hot[1]-A[1])*f|0;b=A[2]+(hot[2]-A[2])*f|0;}
+      a=Math.min(.92,a*3.0);
+    }
+    ctx.fillStyle=`rgba(${r},${g},${b},${a})`;
+    ctx.beginPath();ctx.arc(x,y,Math.max(.25,sz),0,Math.PI*2);ctx.fill();
+  });
+  ctx.globalCompositeOperation='source-over';
+}
+
+function drawBubble(cx,cy,R,alpha){
+  if(alpha<.008)return;
+  const K=isLt?'16,106,88':'14,118,100';
+  const g=ctx.createRadialGradient(cx,cy,R*.5,cx,cy,R);
+  g.addColorStop(0,`rgba(${K},0)`);
+  g.addColorStop(.78,`rgba(${K},${.02*alpha})`);
+  g.addColorStop(.93,`rgba(${K},${(isLt?.13:.17)*alpha})`);
+  g.addColorStop(.975,`rgba(${K},${(isLt?.56:.54)*alpha})`);
+  g.addColorStop(1,`rgba(${K},0)`);
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle=`rgba(${K},${.7*alpha})`;ctx.lineWidth=2;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(cx,cy,R*.965,-2.55,-1.6);ctx.stroke();
+  ctx.strokeStyle=`rgba(${K},${.18*alpha})`;ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.arc(cx,cy,R*.95,.42,1.0);ctx.stroke();
+}
+
+// ─── 4. MAIN LOOP ──────────────────────────────────────────────
+function frame(ts){
+  const t=(ts-t0)/1000;
+  rot+=.00075;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle=isLt?'#ede8d8':'#0d0b18';
+  ctx.fillRect(0,0,W,H);
+
+  const cb=Math.cos(rot*.65),sb=Math.sin(rot*.65);
+  ctx.globalCompositeOperation=isLt?'source-over':'lighter';
+  STARS.forEach(s=>{
+    const p=.5+.5*Math.sin(t/s.tw+s.x*.001);
+    const rx2=s.x*cb-s.y*sb+W/2+camX*.07,ry2=s.x*sb+s.y*cb+H/2+camY*.07;
+    ctx.beginPath();ctx.arc(rx2,ry2,s.r,0,Math.PI*2);
+    ctx.fillStyle=isLt?`rgba(68,68,98,${s.a*(.38+.62*p)})`:`rgba(200,212,248,${s.a*(.52+.48*p)})`;
+    ctx.fill();
+  });
+  ctx.globalCompositeOperation='source-over';
+
+  EDGES.forEach(([a,b])=>{
+    const na=NODES.find(n=>n.id===a),nb=NODES.find(n=>n.id===b);
+    if(!na||!nb)return;
+    const pa=npos(na),pb=npos(nb);
+    const isA=actId===a||actId===b,isH=hovId===a||hovId===b;
+    const al=isA?.52:isH?.2:.08;
+    const A=hRGB(na.col);
+    const ecx=(pa.x+pb.x)/2+(pb.y-pa.y)*.07,ecy=(pa.y+pb.y)/2+(pa.x-pb.x)*.07;
+    ctx.save();
+    ctx.setLineDash(isA?[]:[2.5,7]);
+    ctx.strokeStyle=isA?`rgba(${A[0]},${A[1]},${A[2]},.95)`:isLt?`rgba(48,48,66,${al})`:`rgba(188,200,240,${al})`;
+    ctx.lineWidth=isA?1.5:.6;
+    ctx.beginPath();ctx.moveTo(pa.x,pa.y);ctx.quadraticCurveTo(ecx,ecy,pb.x,pb.y);ctx.stroke();
+    ctx.restore();ctx.setLineDash([]);
+    if(isA){
+      const pr=(t*.42)%1;
+      const bx=(1-pr)**2*pa.x+2*(1-pr)*pr*ecx+pr**2*pb.x;
+      const by=(1-pr)**2*pa.y+2*(1-pr)*pr*ecy+pr**2*pb.y;
+      ctx.beginPath();ctx.arc(bx,by,2.4,0,Math.PI*2);
+      ctx.fillStyle=na.col;ctx.globalAlpha=.82;ctx.fill();ctx.globalAlpha=1;
+    }
+  });
+
+  NODES.forEach(n=>{
+    const p=npos(n);
+    const isA=actId===n.id,isH=hovId===n.id;
+    let al=isA?1:isH?.88:(actId?.2:.76);
+    if(isLt)al=Math.min(1,.36+al*.68);
+    drawCloud(n,p.x,p.y,p.r,al,t);
+    const A=hRGB(n.col);
+    const gh=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*2.3);
+    gh.addColorStop(0,`rgba(${A[0]},${A[1]},${A[2]},${isA?.16:.042})`);
+    gh.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=gh;ctx.beginPath();ctx.arc(p.x,p.y,p.r*2.3,0,Math.PI*2);ctx.fill();
+    const pulse=.5+.5*Math.sin(t*.62+(n.rx+n.ry)*3.8);
+    const Rr=p.r*(isA?1.1:isH?1.06:1);
+    drawBubble(p.x,p.y,Rr,(isA?.9:isLt?(.42+.2*pulse):(.26+.18*pulse))*al);
+    ctx.beginPath();ctx.arc(p.x,p.y,Rr,0,Math.PI*2);
+    ctx.strokeStyle=n.col;ctx.lineWidth=isA?2:1.4;
+    ctx.globalAlpha=isA?.82:isLt?(.38+.16*pulse):(.26+.16*pulse);
+    ctx.stroke();ctx.globalAlpha=1;
+    if(n.area){
+      ctx.beginPath();ctx.arc(p.x,p.y,Rr*1.46,0,Math.PI*2);
+      ctx.strokeStyle=n.col;ctx.setLineDash([2,6]);ctx.lineWidth=1;
+      ctx.globalAlpha=isA?.46:isLt?(.18+.08*pulse):(.12+.08*pulse);
+      ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+    }
+    ctx.beginPath();ctx.arc(p.x,p.y,2.5,0,Math.PI*2);
+    ctx.fillStyle=n.col;ctx.globalAlpha=.85;ctx.fill();ctx.globalAlpha=1;
+    if(n.area||isA||isH){
+      ctx.font='500 10px JetBrains Mono,monospace';
+      ctx.fillStyle=n.col;ctx.globalAlpha=isLt?.72:.65;
+      ctx.textAlign='left';ctx.textBaseline='middle';
+      ctx.fillText(n.lbl,p.x+Rr+7,p.y);
+      ctx.globalAlpha=1;
+    }
+  });
+  mmDraw();pillSync();
+  requestAnimationFrame(frame);
+}
+
+// ─── 5. MINIMAP ────────────────────────────────────────────────
+const mm=document.getElementById('mm'),mmc=mm.getContext('2d');
+const MPW=178,MPH=126,MPD=13;
+function mmPt(n){return{x:MPD+n.rx*(MPW-2*MPD),y:MPD+n.ry*(MPH-2*MPD)};}
+function mmDraw(){
+  mmc.clearRect(0,0,MPW,MPH);
+  mmc.fillStyle=isLt?'rgba(228,222,208,.62)':'rgba(8,8,22,.62)';
+  mmc.fillRect(0,0,MPW,MPH);
+  EDGES.forEach(([a,b])=>{
+    const na=NODES.find(n=>n.id===a),nb=NODES.find(n=>n.id===b);
+    const pa=mmPt(na),pb=mmPt(nb);
+    mmc.beginPath();mmc.moveTo(pa.x,pa.y);mmc.lineTo(pb.x,pb.y);
+    mmc.strokeStyle=isLt?'rgba(0,0,0,.1)':'rgba(255,255,255,.1)';
+    mmc.lineWidth=.8;mmc.stroke();
+  });
+  NODES.forEach(n=>{
+    const p=mmPt(n),isA=n.id===actId;
+    mmc.beginPath();mmc.arc(p.x,p.y,isA?5:n.area?3.8:2.5,0,Math.PI*2);
+    mmc.fillStyle=n.col;mmc.globalAlpha=isA?1:.58;mmc.fill();mmc.globalAlpha=1;
+    if(isA){mmc.beginPath();mmc.arc(p.x,p.y,8,0,Math.PI*2);mmc.strokeStyle=n.col;mmc.lineWidth=1;mmc.globalAlpha=.5;mmc.stroke();mmc.globalAlpha=1;}
+  });
+}
+document.getElementById('mm').addEventListener('click',e=>{
+  const r=mm.getBoundingClientRect();
+  const fx=(e.clientX-r.left)/r.width,fy=(e.clientY-r.top)/r.height;
+  let best=null,bd=1e9;
+  NODES.forEach(n=>{
+    const nx=(MPD+n.rx*(MPW-2*MPD))/MPW,ny=(MPD+n.ry*(MPH-2*MPD))/MPH;
+    const d=(fx-nx)**2+(fy-ny)**2;
+    if(d<bd){bd=d;best=n;}
+  });
+  if(best)openP(best.id);
+});
+
+// ─── 6. PILLS ──────────────────────────────────────────────────
+const pillsCont=document.getElementById('pills'),pillsMap={};
+NODES.filter(n=>n.area).forEach(n=>{
+  const el=document.createElement('div');
+  el.className='ap';
+  el.style.cssText=`color:${n.col};border-color:${n.col}44;background:${n.col}12`;
+  el.innerHTML=`<span class="ad" style="background:${n.col}"></span>${n.lbl}<span class="ae">explore →</span>`;
+  el.addEventListener('click',()=>openP(n.id));
+  el.addEventListener('mouseenter',()=>{hovId=n.id;tipShow(n);});
+  el.addEventListener('mouseleave',()=>{hovId=null;tipHide();});
+  pillsCont.appendChild(el);
+  pillsMap[n.id]=el;
+});
+function pillSync(){
+  NODES.filter(n=>n.area).forEach(n=>{
+    const el=pillsMap[n.id];if(!el)return;
+    const p=npos(n);
+    el.style.left=p.x+'px';
+    el.style.top=(p.y-p.r-24)+'px';
+    el.style.opacity=pOpen&&actId!==n.id?'.2':'1';
+    el.style.pointerEvents=pOpen&&actId!==n.id?'none':'auto';
+  });
+}
+
+// ─── 7. TOOLTIP ────────────────────────────────────────────────
+const tipEl=document.getElementById('tip');
+function tipShow(n){
+  const p=npos(n);
+  document.getElementById('tdot').style.background=n.col;
+  document.getElementById('tnm').textContent=n.lbl;
+  document.getElementById('tkc').textContent=n.kicker||'';
+  const tg=document.getElementById('tgo');
+  tg.textContent=n.area?'AREA · click to explore →':'NODE · click to preview →';
+  tg.style.color=n.col;
+  tipEl.style.borderColor=n.col;
+  tipEl.style.left=p.x+'px';
+  tipEl.style.top=(p.y-p.r-.88)+'px';
+  tipEl.style.opacity='1';
+}
+function tipHide(){tipEl.style.opacity='0';}
+
+// ─── 8. PANEL ──────────────────────────────────────────────────
+function openP(id){
+  const n=NODES.find(n=>n.id===id);if(!n)return;
+  actId=id;pOpen=true;hovId=null;tipHide();
+  document.getElementById('pat').textContent=n.kicker||'';
+  document.getElementById('pb').innerHTML=
+    `<span class="pk" style="color:${n.col}">${n.kicker||''}</span>
+     <h2 style="background:linear-gradient(118deg,${n.col},${n.col}80);-webkit-background-clip:text;background-clip:text">${n.title||n.lbl}</h2>
+     <p class="pl">${n.body||''}</p>
+     ${PCONT[id]||''}`;
+  document.getElementById('pnl').classList.add('open');
+  document.getElementById('pnl').scrollTop=0;
+  document.querySelectorAll('.tb').forEach(t=>{
+    const on=t.dataset.id===id;
+    t.classList.toggle('on',on);
+    if(on){t.style.background=n.col;t.style.color='#06070d';t.style.borderColor=n.col;}
+    else{t.style.background='';t.style.color='';t.style.borderColor='';}
+  });
+}
+function closeP(){
+  document.getElementById('pnl').classList.remove('open');
+  pOpen=false;actId=null;
+  document.querySelectorAll('.tb').forEach(t=>{
+    t.classList.remove('on');t.style.background='';t.style.color='';t.style.borderColor='';
+  });
+  const def=document.querySelector('.tb[data-id="aroop"]');
+  if(def){def.classList.add('on');def.style.background='#64ffda';def.style.color='#06070d';def.style.borderColor='#64ffda';}
+}
+document.getElementById('pbk').addEventListener('click',closeP);
+document.getElementById('clr').addEventListener('click',closeP);
+document.querySelectorAll('.tb').forEach(t=>t.addEventListener('click',()=>openP(t.dataset.id)));
+
+// ─── 9. WHATSAPP FORM ──────────────────────────────────────────
+function sbWA(e){
+  e.preventDefault();
+  const name=document.getElementById('wa_name')?.value||'';
+  const email=document.getElementById('wa_email')?.value||'';
+  const service=document.getElementById('wa_service')?.value||'';
+  const msg=document.getElementById('wa_msg')?.value||'';
+  const text=
+    `*New Portfolio Inquiry* 🔐\n\n`+
+    `*Name:* ${name}\n`+
+    `*Email:* ${email||'Not provided'}\n`+
+    `*Service:* ${service}\n\n`+
+    `*Message:*\n${msg}\n\n`+
+    `_Sent from Abu Arefin Aroop's Portfolio_`;
+  window.open(`https://wa.me/8801706926259?text=${encodeURIComponent(text)}`,'_blank','noopener,noreferrer');
+  const form=document.getElementById('cfrm');
+  if(form)form.innerHTML=
+    '<div style="text-align:center;padding:24px 0;line-height:2">'+
+    '<div style="font-size:30px;margin-bottom:8px">✅</div>'+
+    '<p style="color:#25D366;font-weight:700;font-size:13px">WhatsApp opened!</p>'+
+    '<p style="font-size:11px;color:var(--ink2)">Your message is pre-filled.<br>Just tap <b>Send</b> in WhatsApp Business.</p>'+
+    '</div>';
+}
+
+// ─── 10. COPY TO CLIPBOARD ─────────────────────────────────────
+function cpTxt(txt,label){
+  const toast=document.getElementById('cp_toast');
+  const show=(msg)=>{if(toast){toast.textContent=msg;toast.style.display='block';toast.style.color='#64ffda';setTimeout(()=>{toast.style.display='none';},2600);}};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(()=>show(`✓ ${label} copied!`)).catch(()=>show('Could not copy — please copy manually'));
+  }else{
+    const el=document.createElement('textarea');
+    el.value=txt;el.style.cssText='position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(el);el.select();
+    try{document.execCommand('copy');show(`✓ ${label} copied!`);}catch(err){show('Could not copy — please copy manually');}
+    document.body.removeChild(el);
+  }
+}
+
+// ─── 11. THEME ─────────────────────────────────────────────────
+document.getElementById('thm').addEventListener('click',()=>{
+  isLt=!isLt;
+  document.body.classList.toggle('LT',isLt);
+  document.getElementById('thm').textContent=isLt?'☾ Dark':'☀ Light';
+});
+
+// ─── 12. CURSOR ────────────────────────────────────────────────
+const crEl=document.getElementById('cr'),rgEl=document.getElementById('rg');
+document.addEventListener('mousemove',e=>{
+  mxC=e.clientX;myC=e.clientY;
+  crEl.style.left=mxC+'px';crEl.style.top=myC+'px';
+  if(dragS&&!pOpen){
+    const dx=mxC-dragS.cx,dy=myC-dragS.cy;
+    if(Math.hypot(dx,dy)>4)dragged=true;
+    if(dragged){camX=dragS.camX+dx*.28;camY=dragS.camY+dy*.28;}
+  }
+  let hit=null;
+  NODES.forEach(n=>{const p=npos(n);if(Math.hypot(mxC-p.x,myC-p.y)<p.r+38)hit=n;});
+  if(hit){
+    hovId=hit.id;crEl.style.background=hit.col;rgEl.style.borderColor=hit.col;
+    crEl.style.transform='translate(-50%,-50%) scale(2.2)';rgEl.style.opacity='.9';
+    cv.style.cursor='pointer';tipShow(hit);
+  }else{
+    hovId=null;tipHide();
+    crEl.style.background='#64ffda';rgEl.style.borderColor='#64ffda';
+    crEl.style.transform='translate(-50%,-50%) scale(1)';rgEl.style.opacity='.48';
+    cv.style.cursor=dragS&&dragged?'grabbing':'crosshair';
+  }
+});
+setInterval(()=>{rxC+=(mxC-rxC)*.11;ryC+=(myC-ryC)*.11;rgEl.style.left=rxC+'px';rgEl.style.top=ryC+'px';},14);
+
+// ─── 13. INTERACTION ───────────────────────────────────────────
+function hitTest(x,y){
+  let hit=null;
+  NODES.forEach(n=>{const p=npos(n);if(Math.hypot(x-p.x,y-p.y)<p.r+40)hit=n;});
+  return hit;
+}
+cv.addEventListener('mousedown',e=>{dragS={cx:e.clientX,cy:e.clientY,camX,camY};dragged=false;});
+cv.addEventListener('mouseup',e=>{
+  if(!dragged){const hit=hitTest(e.clientX,e.clientY);if(hit)openP(hit.id);else if(!pOpen)closeP();}
+  dragS=null;dragged=false;
+});
+let tDragS=null,tDragged=false;
+cv.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){const t=e.touches[0];tDragS={cx:t.clientX,cy:t.clientY,camX,camY};tDragged=false;}
+},{passive:true});
+cv.addEventListener('touchmove',e=>{
+  if(tDragS&&e.touches.length===1){
+    const t=e.touches[0],dx=t.clientX-tDragS.cx,dy=t.clientY-tDragS.cy;
+    if(Math.hypot(dx,dy)>9)tDragged=true;
+    if(tDragged){camX=tDragS.camX+dx*.28;camY=tDragS.camY+dy*.28;}
+  }
+},{passive:true});
+cv.addEventListener('touchend',e=>{
+  if(!tDragged&&e.changedTouches.length){
+    const t=e.changedTouches[0],hit=hitTest(t.clientX,t.clientY);
+    if(hit)openP(hit.id);else if(!pOpen)closeP();
+  }
+  tDragS=null;tDragged=false;
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeP();});
+
+// ─── 14. TAB INIT ──────────────────────────────────────────────
+document.querySelectorAll('.tb').forEach(t=>{
+  const n=NODES.find(n=>n.id===t.dataset.id);if(!n)return;
+  t.querySelector('i').style.background=n.col;
+  if(t.classList.contains('on')){t.style.background=n.col;t.style.color='#06070d';t.style.borderColor=n.col;}
+});
+
+// ─── 15. SPLASH ────────────────────────────────────────────────
+const sp=document.getElementById('sp');
+function dismissSp(){sp.style.opacity='0';setTimeout(()=>sp.remove(),920);}
+sp.addEventListener('click',dismissSp);
+sp.addEventListener('touchend',dismissSp);
+
+// ─── START ─────────────────────────────────────────────────────
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
