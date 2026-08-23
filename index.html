@@ -574,58 +574,81 @@ contact:`
 <p style="font-size:11px;color:var(--ink2);margin-bottom:14px;line-height:1.65">
   For project payments, deposits, or consultation fees — use any option below.
 </p>
-
 <!-- bKash -->
 <div class="bkash-card">
   <div class="bkash-title">📱 bKash / TapTap — SEND MONEY</div>
 
+  <!-- QR CODE IMAGE
+       Put bkash-qr.jpg in the SAME folder as index.html
+       ❌ NEVER use D:\ or C:\ paths
+  -->
   <img class="bkash-qr-img"
        src="bkash-qr.jpg"
-       alt="bKash QR Code — 01706926259"
-       onerror="this.style.display='none';
-                document.getElementById('bkash_fb').style.display='flex'">
+       alt="bKash QR Code 01706926259"
+       onerror="this.style.display='none';document.getElementById('bkash_fb').style.display='flex'">
 
   <div id="bkash_fb"
        style="display:none;width:170px;height:170px;border-radius:8px;
               border:2px dashed rgba(232,0,120,.5);margin:0 auto 12px;
-              align-items:center;justify-content:center;
-              flex-direction:column;gap:8px;background:rgba(232,0,120,.05);
-              padding:12px;text-align:center">
+              align-items:center;justify-content:center;flex-direction:column;
+              gap:8px;background:rgba(232,0,120,.05);padding:12px;text-align:center">
     <span style="font-size:28px">📷</span>
     <span style="font-size:10px;color:rgba(232,0,120,.8);line-height:1.6">
-      QR image not found.<br>
-      Put <b>bkash-qr.jpg</b><br>
-      in the same folder as<br>
-      <b>index.html</b>
+      Put <b>bkash-qr.jpg</b><br>in the same folder<br>as <b>index.html</b>
     </span>
   </div>
 
   <div class="bkash-num">01706926259</div>
-  <div class="bkash-sub">Open bKash app → Send Money → Scan QR or paste number</div>
+  <div class="bkash-sub">Scan QR with bKash app — or copy number below</div>
 
-  <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
+  <!-- HOW TO SEND MONEY STEPS -->
+  <div style="background:rgba(232,0,120,.06);border:1px solid rgba(232,0,120,.2);
+              border-radius:8px;padding:12px;margin:12px 0;text-align:left">
+    <div style="font-size:10px;font-weight:700;color:#e80078;letter-spacing:.1em;margin-bottom:8px">
+      HOW TO SEND MONEY
+    </div>
+    <div style="font-size:11px;color:var(--ink2);line-height:2">
+      1️⃣ Open <b>bKash app</b><br>
+      2️⃣ Tap <b>Send Money</b><br>
+      3️⃣ Enter number: <b style="color:#e80078;letter-spacing:.06em">01706926259</b><br>
+      4️⃣ Enter amount &amp; your reference<br>
+      5️⃣ Tap <b>Confirm</b>
+    </div>
+  </div>
+
+  <!-- ACTION BUTTONS — no shop.bkash.com (that requires merchant account) -->
+  <div style="display:flex;flex-direction:column;gap:8px">
     <button onclick="cpTxt('01706926259','bKash number')"
       style="background:#e80078;color:#fff;border:none;border-radius:8px;
-             padding:10px;font-size:11px;letter-spacing:.06em;cursor:pointer;
-             font-family:var(--mono);width:100%;transition:.2s"
-      onmouseover="this.style.opacity='.85'"
+             padding:11px;font-size:11px;letter-spacing:.06em;cursor:pointer;
+             font-family:var(--mono);width:100%;transition:.2s;display:flex;
+             align-items:center;justify-content:center;gap:6px"
+      onmouseover="this.style.opacity='.82'"
       onmouseout="this.style.opacity='1'">
-      📋 COPY NUMBER TO SEND MONEY
+      📋 COPY NUMBER · 01706926259
     </button>
+
     <a href="tel:+8801706926259"
-      style="background:rgba(232,0,120,.12);color:#e80078;
-             border:1px solid rgba(232,0,120,.35);border-radius:8px;
-             padding:10px;font-size:11px;letter-spacing:.06em;
-             text-align:center;text-decoration:none;display:block;transition:.2s"
-      onmouseover="this.style.background='rgba(232,0,120,.22)'"
-      onmouseout="this.style.background='rgba(232,0,120,.12)'">
-      📞 CALL / DIAL +880 1706-926259
+      style="background:rgba(232,0,120,.1);color:#e80078;
+             border:1.5px solid rgba(232,0,120,.35);border-radius:8px;
+             padding:11px;font-size:11px;letter-spacing:.06em;text-align:center;
+             text-decoration:none;display:block;transition:.2s"
+      onmouseover="this.style.background='rgba(232,0,120,.2)'"
+      onmouseout="this.style.background='rgba(232,0,120,.1)'">
+      📞 DIAL +880 1706-926259
     </a>
   </div>
 
-  <div style="font-size:10px;color:var(--ink3);margin-top:10px;
-              line-height:1.65;text-align:center">
-    bKash app → <b>Send Money</b> → type or paste <b>01706926259</b>
+  <!-- WHY NO "PAY ONLINE" BUTTON -->
+  <div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.04);
+              border-radius:6px;border:1px solid var(--bdr)">
+    <p style="font-size:10px;color:var(--ink3);line-height:1.7;text-align:center">
+      ⓘ bKash online payment links require a <b>merchant account</b>.<br>
+      Use <b>Send Money</b> in the bKash app with the number above.<br>
+      After payment, send screenshot to
+      <a href="https://wa.me/8801706926259" target="_blank"
+         style="color:#25D366;text-decoration:none">WhatsApp</a>.
+    </p>
   </div>
 </div>
 
