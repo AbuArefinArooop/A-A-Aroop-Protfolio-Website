@@ -577,21 +577,58 @@ contact:`
 
 <!-- bKash -->
 <div class="bkash-card">
-  <!-- <div class="bkash-title">📱 bKash/taptap — SEND MONEY</div>
-  <!-- REPLACE: save your bKash QR image as assets/images/bkash-qr.jpg -->
-  <img class="bkash-qr-img" src="bkash-qr.jpg" alt="bKash QR — 01706926259"
-       onerror="this.style.display='none';document.getElementById('bkash_fb').style.display='flex'">
-  <!-- Fallback placeholder -->
-  <div id="bkash_fb" style="display:none;width:170px;height:170px;border-radius:8px;border:2px dashed rgba(232,0,120,.4);margin:0 auto 12px;align-items:center;justify-content:center;flex-direction:column;gap:6px;background:rgba(232,0,120,.05)">
+  <div class="bkash-title">📱 bKash / TapTap — SEND MONEY</div>
+
+  <img class="bkash-qr-img"
+       src="bkash-qr.jpg"
+       alt="bKash QR Code — 01706926259"
+       onerror="this.style.display='none';
+                document.getElementById('bkash_fb').style.display='flex'">
+
+  <div id="bkash_fb"
+       style="display:none;width:170px;height:170px;border-radius:8px;
+              border:2px dashed rgba(232,0,120,.5);margin:0 auto 12px;
+              align-items:center;justify-content:center;
+              flex-direction:column;gap:8px;background:rgba(232,0,120,.05);
+              padding:12px;text-align:center">
     <span style="font-size:28px">📷</span>
-    <span style="font-size:10px;color:rgba(232,0,120,.7);text-align:center">Save bKash QR as<br>bkash-qr.jpg</span>
+    <span style="font-size:10px;color:rgba(232,0,120,.8);line-height:1.6">
+      QR image not found.<br>
+      Put <b>bkash-qr.jpg</b><br>
+      in the same folder as<br>
+      <b>index.html</b>
+    </span>
   </div>
+
   <div class="bkash-num">01706926259</div>
-  <div class="bkash-sub">Scan with bKash app → Send Money</div>
-  <!-- <a class="bkash-btn" href="https://shop.bkash.com/abu-arefin-aroop01706926259/" target="_blank" rel="noopener">
-    PAY ONLINE ↗
-  </a> --> -->
+  <div class="bkash-sub">Open bKash app → Send Money → Scan QR or paste number</div>
+
+  <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
+    <button onclick="cpTxt('01706926259','bKash number')"
+      style="background:#e80078;color:#fff;border:none;border-radius:8px;
+             padding:10px;font-size:11px;letter-spacing:.06em;cursor:pointer;
+             font-family:var(--mono);width:100%;transition:.2s"
+      onmouseover="this.style.opacity='.85'"
+      onmouseout="this.style.opacity='1'">
+      📋 COPY NUMBER TO SEND MONEY
+    </button>
+    <a href="tel:+8801706926259"
+      style="background:rgba(232,0,120,.12);color:#e80078;
+             border:1px solid rgba(232,0,120,.35);border-radius:8px;
+             padding:10px;font-size:11px;letter-spacing:.06em;
+             text-align:center;text-decoration:none;display:block;transition:.2s"
+      onmouseover="this.style.background='rgba(232,0,120,.22)'"
+      onmouseout="this.style.background='rgba(232,0,120,.12)'">
+      📞 CALL / DIAL +880 1706-926259
+    </a>
+  </div>
+
+  <div style="font-size:10px;color:var(--ink3);margin-top:10px;
+              line-height:1.65;text-align:center">
+    bKash app → <b>Send Money</b> → type or paste <b>01706926259</b>
+  </div>
 </div>
+
 
 <!-- Bank Transfer -->
 <div class="bank-card">
