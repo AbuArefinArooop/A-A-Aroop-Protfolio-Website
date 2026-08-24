@@ -1,0 +1,39 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+[functions]
+  node_bundler = "esbuild"
+
+# Keep API endpoints tidy: /api/track, /api/stats, /api/chat
+[[redirects]]
+  from = "/api/track"
+  to = "/.netlify/functions/track"
+  status = 200
+
+[[redirects]]
+  from = "/api/stats"
+  to = "/.netlify/functions/stats"
+  status = 200
+
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+
+# ── Baseline security headers ─────────────────────────────────────
+# Applied to every page on the site. The CSP allows 'unsafe-inline' for
+# script/style because the existing site uses inline <script>/<style>
+# blocks throughout — tightening that would require refactoring the whole
+# page to use nonces or external files. Everything else here still blocks
+# arbitrary third-party script/frame/resource loading, which is the more
+# common real-world attack vector (malicious ad/widget injection, clickjacking).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://wa.me"

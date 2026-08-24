@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Ops Dashboard · Abu Arefin Aroop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
+<!-- Self-hosted, not loaded from a CDN: keeps the dashboard working even if
+     a third-party CDN is ever compromised or unreachable. Ship vendor/chart.umd.min.js
+     alongside this file. -->
+<script src="vendor/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0d0b18;--bg2:#111120;--ink:rgba(255,255,255,.96);--ink2:rgba(255,255,255,.68);--ink3:rgba(255,255,255,.40);
+  --bdr:rgba(255,255,255,.12);--card:rgba(17,15,30,.7);--accent:#64ffda;
+  --mono:'JetBrains Mono',monospace;--dis:'Cabinet Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:
+  radial-gradient(ellipse at top left, rgba(100,255,218,.06), transparent 55%),
+  radial-gradient(ellipse at bottom right, rgba(183,148,246,.05), transparent 55%),
+  var(--bg);
+  color:var(--ink);font-family:var(--mono);min-height:100vh}
+
+/* ── GATE ── */
+#gate{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+#gateBox{width:min(320px,90vw);text-align:center}
+#gateBox h1{font-family:var(--dis);font-weight:900;font-size:22px;margin-bottom:6px}
+#gateBox p{font-size:11px;color:var(--ink3);margin-bottom:18px;letter-spacing:.05em}
+#gateBox input{width:100%;padding:12px 14px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);
+  border-radius:8px;color:var(--ink);font-family:var(--mono);font-size:13px;outline:none;margin-bottom:10px;text-align:center}
+#gateBox input:focus{border-color:var(--accent)}
+#gateBox button{width:100%;padding:12px;border-radius:8px;border:none;background:var(--accent);color:#06070d;
+  font-weight:700;font-size:12px;letter-spacing:.08em;cursor:pointer}
+#gateErr{color:#ff6b6b;font-size:11px;margin-top:10px;min-height:14px}
+
+/* ── SHELL ── */
+#app{display:none}
+#app.show{display:block}
+header{padding:22px 28px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+header h1{font-family:var(--dis);font-weight:900;font-size:20px;letter-spacing:-.01em}
+header span.eyebrow{display:block;font-size:9.5px;letter-spacing:.24em;color:var(--accent);margin-bottom:4px;font-weight:700}
+#rangeSel{background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:999px;color:var(--ink2);
+  font-family:var(--mono);font-size:11px;padding:7px 14px;cursor:pointer}
+main{max-width:1180px;margin:0 auto;padding:26px 28px 60px}
+
+.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:20px}
+.kpi{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px 18px;backdrop-filter:blur(10px)}
+.kpi .n{font-family:var(--dis);font-size:30px;font-weight:800;color:var(--accent);line-height:1}
+.kpi .l{font-size:10px;color:var(--ink3);letter-spacing:.1em;margin-top:6px;text-transform:uppercase}
+
+.panels{grid-template-columns:1.4fr 1fr;margin-bottom:16px}
+@media(max-width:860px){.panels{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 20px;backdrop-filter:blur(10px)}
+.panel h2{font-size:11px;letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.panel h2::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.full{grid-column:1/-1}
+
+.row2{grid-template-columns:1fr 1fr}
+@media(max-width:860px){.row2{grid-template-columns:1fr}}
+
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--ink3);font-weight:500;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid var(--bdr)}
+td{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);color:var(--ink2)}
+tr:last-child td{border-bottom:none}
+.bar-track{background:rgba(255,255,255,.06);border-radius:5px;height:6px;width:100%;overflow:hidden;margin-top:5px}
+.bar-fill{height:100%;background:var(--accent);border-radius:5px}
+
+.funnel-step{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.funnel-step:last-child{border-bottom:none}
+.funnel-n{font-family:var(--dis);font-weight:800;font-size:20px;color:var(--ink);width:52px;text-align:right}
+.funnel-label{flex:1;font-size:12px;color:var(--ink2)}
+.funnel-pct{font-size:10px;color:var(--accent)}
+
+.tag{display:inline-block;font-size:9.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--bdr);color:var(--ink3);margin-right:4px}
+.lead-card{background:rgba(100,255,218,.05);border:1px solid rgba(100,255,218,.22);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.lead-card b{font-size:13px;color:var(--accent)}
+.lead-card .meta{font-size:10px;color:var(--ink3);margin-top:4px}
+.lead-card .interest{font-size:12px;color:var(--ink2);margin-top:6px}
+
+#insights li{font-size:12.5px;color:var(--ink2);line-height:1.7;margin-bottom:10px;padding-left:16px;position:relative}
+#insights li::before{content:'▸';position:absolute;left:0;color:var(--accent)}
+.empty{color:var(--ink3);font-size:12px;padding:10px 0}
+canvas{max-height:220px}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div id="gateBox">
+    <h1>OPS DASHBOARD</h1>
+    <p>ENTER PASSWORD TO VIEW VISITOR DATA</p>
+    <input id="pwInput" type="password" placeholder="Dashboard password" autofocus>
+    <button id="pwBtn">UNLOCK →</button>
+    <div id="gateErr"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div><span class="eyebrow">AROOP.NETLIFY.APP</span><h1>Visitor & Lead Dashboard</h1></div>
+    <select id="rangeSel">
+      <option value="7">Last 7 days</option>
+      <option value="14" selected>Last 14 days</option>
+      <option value="30">Last 30 days</option>
+      <option value="90">Last 90 days</option>
+    </select>
+  </header>
+
+  <main>
+    <div class="grid kpis" id="kpis"></div>
+
+    <div class="grid panels">
+      <div class="panel">
+        <h2>Sessions over time</h2>
+        <canvas id="sessionsChart"></canvas>
+      </div>
+      <div class="panel">
+        <h2>Visitor funnel</h2>
+        <div id="funnel"></div>
+      </div>
+    </div>
+
+    <div class="grid row2" style="margin-bottom:16px">
+      <div class="panel">
+        <h2>Most-viewed sections</h2>
+        <table>
+          <thead><tr><th>Section</th><th>Opens</th><th>Avg. time</th></tr></thead>
+          <tbody id="sectionsBody"></tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <h2>What visitors click</h2>
+        <table>
+          <thead><tr><th>Action</th><th>Count</th></tr></thead>
+          <tbody id="ctaBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid row2" style="margin-bottom:16px">
+      <div class="panel">
+        <h2>Where visitors come from</h2>
+        <table>
+          <thead><tr><th>Referrer</th><th>Sessions</th></tr></thead>
+          <tbody id="refBody"></tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <h2>Device split</h2>
+        <canvas id="deviceChart"></canvas>
+      </div>
+    </div>
+
+    <div class="panel full" style="margin-bottom:16px">
+      <h2>Top countries</h2>
+      <table>
+        <thead><tr><th>Country</th><th>Sessions</th></tr></thead>
+        <tbody id="countryBody"></tbody>
+      </table>
+    </div>
+
+    <div class="panel full" style="margin-bottom:16px">
+      <h2>💡 Recommendations</h2>
+      <ul id="insights"></ul>
+    </div>
+
+    <div class="grid row2" style="margin-bottom:16px">
+      <div class="panel">
+        <h2>Chatbot leads</h2>
+        <div id="leads"></div>
+      </div>
+      <div class="panel">
+        <h2>Recent sessions</h2>
+        <div id="sessions" style="max-height:340px;overflow-y:auto"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+var STATS_URL = '/api/stats';
+var pw = sessionStorage.getItem('_dash_pw') || '';
+var chartRefs = {};
+
+function fmtSec(s){ if(s==null) return '—'; if(s<60) return s+'s'; return Math.round(s/60)+'m '+ (s%60) +'s'; }
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+function unlock(){
+  var input = document.getElementById('pwInput').value.trim();
+  document.getElementById('gateErr').textContent = '';
+  loadStats(input, function(ok, msg){
+    if(ok){
+      pw = input;
+      sessionStorage.setItem('_dash_pw', pw);
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('app').classList.add('show');
+    } else {
+      document.getElementById('gateErr').textContent = msg || 'Incorrect password or server not configured yet.';
+    }
+  });
+}
+document.getElementById('pwBtn').addEventListener('click', unlock);
+document.getElementById('pwInput').addEventListener('keydown', function(e){ if(e.key==='Enter') unlock(); });
+document.getElementById('rangeSel').addEventListener('change', function(){ loadStats(pw, function(){}); });
+
+function loadStats(password, cb){
+  var days = document.getElementById('rangeSel').value || 14;
+  fetch(STATS_URL + '?days=' + days, { headers: { 'X-Dashboard-Password': password } })
+    .then(function(r){
+      if(r.status === 429){ cb(false, 'Too many attempts — wait a bit before trying again.'); return null; }
+      if(r.status === 401){ cb(false, 'Incorrect password.'); return null; }
+      if(!r.ok){ cb(false, 'Server not reachable — check functions are deployed.'); return null; }
+      return r.json();
+    })
+    .then(function(data){
+      if(!data) return;
+      cb(true);
+      render(data);
+    })
+    .catch(function(){ cb(false, 'Connection error.'); });
+}
+
+function render(d){
+  // KPIs
+  document.getElementById('kpis').innerHTML = [
+    ['Sessions', d.totals.sessions],
+    ['Events tracked', d.totals.events],
+    ['Chatbot conversations', d.totals.chatSessions],
+    ['Leads captured', d.totals.leads]
+  ].map(function(k){ return '<div class="kpi"><div class="n">'+k[1]+'</div><div class="l">'+k[0]+'</div></div>'; }).join('');
+
+  // Sessions over time chart
+  var ctx = document.getElementById('sessionsChart').getContext('2d');
+  if(chartRefs.sessions) chartRefs.sessions.destroy();
+  chartRefs.sessions = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: d.sessionsByDay.map(function(x){ return x.day.slice(5); }),
+      datasets: [{ data: d.sessionsByDay.map(function(x){ return x.sessions; }),
+        borderColor:'#64ffda', backgroundColor:'rgba(100,255,218,.12)', fill:true, tension:.35, pointRadius:2 }]
+    },
+    options: { plugins:{legend:{display:false}}, scales:{
+      x:{ticks:{color:'#ffffff66',font:{family:'JetBrains Mono',size:9}},grid:{color:'#ffffff10'}},
+      y:{ticks:{color:'#ffffff66',font:{family:'JetBrains Mono',size:9}},grid:{color:'#ffffff10'},beginAtZero:true}
+    }}
+  });
+
+  // Funnel
+  var f = d.funnel;
+  var steps = [
+    ['Visited the site', f.visited],
+    ['Explored a section', f.viewedAnySection],
+    ['Clicked contact / WhatsApp', f.clickedContact],
+    ['Chatted with the AI assistant', f.chattedWithBot],
+    ['Became a captured lead', f.becameLead]
+  ];
+  document.getElementById('funnel').innerHTML = steps.map(function(s){
+    var pct = f.visited ? Math.round(s[1]/f.visited*100) : 0;
+    return '<div class="funnel-step"><div class="funnel-n">'+s[1]+'</div>'+
+      '<div class="funnel-label">'+s[0]+'<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%"></div></div></div>'+
+      '<div class="funnel-pct">'+pct+'%</div></div>';
+  }).join('');
+
+  // Top sections
+  var secBody = document.getElementById('sectionsBody');
+  secBody.innerHTML = d.topSections.length ? d.topSections.map(function(s){
+    return '<tr><td>'+esc(s.id)+'</td><td>'+s.opens+'</td><td>'+fmtSec(s.avgDwellSec)+'</td></tr>';
+  }).join('') : '<tr><td colspan="3" class="empty">No data yet</td></tr>';
+
+  // CTA clicks
+  var ctaBody = document.getElementById('ctaBody');
+  var ctaEntries = Object.entries(d.ctaClicks || {});
+  ctaBody.innerHTML = ctaEntries.length ? ctaEntries.sort(function(a,b){return b[1]-a[1];}).map(function(c){
+    return '<tr><td>'+esc(c[0])+'</td><td>'+c[1]+'</td></tr>';
+  }).join('') : '<tr><td colspan="2" class="empty">No clicks yet</td></tr>';
+
+  // Countries
+  var countryBody = document.getElementById('countryBody');
+  countryBody.innerHTML = (d.countries||[]).length ? d.countries.map(function(c){
+    return '<tr><td>'+esc(c[0]||'Unknown')+'</td><td>'+c[1]+'</td></tr>';
+  }).join('') : '<tr><td colspan="2" class="empty">No country data yet</td></tr>';
+
+  // Referrers
+  var refBody = document.getElementById('refBody');
+  refBody.innerHTML = (d.referrers||[]).length ? d.referrers.map(function(r){
+    return '<tr><td>'+esc(r[0]||'(direct)')+'</td><td>'+r[1]+'</td></tr>';
+  }).join('') : '<tr><td colspan="2" class="empty">Mostly direct traffic so far</td></tr>';
+
+  // Devices
+  var dctx = document.getElementById('deviceChart').getContext('2d');
+  if(chartRefs.device) chartRefs.device.destroy();
+  chartRefs.device = new Chart(dctx, {
+    type:'doughnut',
+    data:{ labels:['Mobile','Desktop','Unknown'],
+      datasets:[{ data:[d.devices.mobile, d.devices.desktop, d.devices.unknown],
+        backgroundColor:['#64ffda','#b794f6','#ffffff22'], borderWidth:0 }] },
+    options:{ plugins:{legend:{position:'bottom', labels:{color:'#ffffffaa', font:{family:'JetBrains Mono',size:10}}}} }
+  });
+
+  // Leads
+  var leadsEl = document.getElementById('leads');
+  leadsEl.innerHTML = d.leads.length ? d.leads.map(function(l){
+    return '<div class="lead-card"><b>'+esc(l.name||'Unnamed visitor')+'</b>'+
+      '<div class="meta">'+esc(l.email||'no email given')+' · '+new Date(l.ts).toLocaleString()+'</div>'+
+      (l.interest ? '<div class="interest">'+esc(l.interest)+'</div>' : '')+'</div>';
+  }).join('') : '<div class="empty">No leads captured yet — the chatbot logs a lead here whenever a visitor shares interest, a name, or an email.</div>';
+
+  // Recent sessions
+  var sessEl = document.getElementById('sessions');
+  sessEl.innerHTML = d.recentSessions.length ? '<table><thead><tr><th>Started</th><th>Device</th><th>Path</th></tr></thead><tbody>' +
+    d.recentSessions.map(function(s){
+      return '<tr><td>'+new Date(s.firstSeen).toLocaleString()+'</td><td>'+(s.device||'—')+'</td>'+
+        '<td>'+ (s.path.slice(0,6).map(function(p){return '<span class="tag">'+esc(p)+'</span>';}).join('') || '<span class="empty">—</span>') +'</td></tr>';
+    }).join('') + '</tbody></table>' : '<div class="empty">No sessions yet</div>';
+
+  // Insights (simple rule-based recommendations)
+  var tips = [];
+  if(f.visited > 0){
+    var exploreRate = f.viewedAnySection / f.visited;
+    var contactRate = f.clickedContact / f.visited;
+    if(exploreRate < 0.4) tips.push('Only '+Math.round(exploreRate*100)+'% of visitors open any section — the "click anywhere to enter" splash may be losing people. Consider a subtler hint or auto-opening your AROOP bio panel after 2–3s of inactivity.');
+    if(contactRate < 0.1 && f.visited >= 10) tips.push('Fewer than 10% of visitors click WhatsApp/email. Add a visible "Hire me" or "Get a quote" pill near the top bar instead of relying only on panel CTAs.');
+    if(f.chattedWithBot / f.visited < 0.05 && f.visited >= 10) tips.push('Chatbot engagement is low — try making the chat bubble pulse once on load, or add a proactive greeting after 8–10 seconds on the page.');
+  }
+  var top = d.topSections[0];
+  if(top) tips.push('"'+top.id.toUpperCase()+'" is your most-viewed section ('+top.opens+' opens). Consider featuring a related case study or testimonial higher up, and adding a direct CTA inside that panel if it does not have one.');
+  if(d.totals.leads === 0 && d.totals.sessions > 5) tips.push('No leads captured yet despite '+d.totals.sessions+' sessions — try asking the chatbot to proactively offer a free 15-min consult call after 2-3 exchanges.');
+  if(d.devices.mobile > d.devices.desktop) tips.push('Majority of traffic is mobile ('+d.devices.mobile+' vs '+d.devices.desktop+' desktop) — double check the chat widget and cert-category grid do not get cramped on small screens.');
+  if(!tips.length) tips.push('Not enough data yet for tailored recommendations — check back after a bit more traffic.');
+  document.getElementById('insights').innerHTML = tips.map(function(t){ return '<li>'+t+'</li>'; }).join('');
+}
+
+// Auto-unlock if password already stored this session
+if(pw){
+  loadStats(pw, function(ok){
+    if(ok){ document.getElementById('gate').style.display='none'; document.getElementById('app').classList.add('show'); }
+  });
+}
+</script>
+</body>
+</html>
